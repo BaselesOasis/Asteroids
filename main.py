@@ -8,10 +8,13 @@ from asteroidfield import *
 updatable = pygame.sprite.Group()
 drawable = pygame.sprite.Group()
 asteroids = pygame.sprite.Group()
+shots = pygame.sprite.Group()
 
 Player.containers = (updatable, drawable)
 Asteroid.containers = (updatable, drawable, asteroids)
 AsteroidField.containers = (updatable)
+Shot.containers = (updatable, drawable, shots)
+
 
 
 
@@ -39,6 +42,17 @@ def main():
         screen.fill("black")
 
         updatable.update(dt)
+        for shot in shots:
+            for asteroid in asteroids:
+                if shot.collision(asteroid):
+                    shot.kill()
+                    asteroid.split()
+
+        for asteroid in asteroids:
+            if player.collision(asteroid):
+                print(f"Game over!")
+                exit()
+
         for drawable_thing in drawable:
             drawable_thing.draw(screen)
 
