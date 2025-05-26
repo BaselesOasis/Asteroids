@@ -1,5 +1,14 @@
 import pygame
 from constants import *
+from player import *
+
+updatable = pygame.sprite.Group()
+drawable = pygame.sprite.Group()
+
+Player.containers = (updatable, drawable)
+
+
+
 
 def main():
     print(f"Starting Asteroids!")
@@ -12,18 +21,24 @@ def main():
     game_clock = pygame.time.Clock()
     dt = 0
 
-#---gameloop---
+    #initiating player
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    #---gameloop---
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-
         screen.fill("black")
 
-        #---draw screen---
+        updatable.update(dt)
+        for drawable_thing in drawable:
+            drawable_thing.draw(screen)
+
+
+
         pygame.display.flip()
 
-        # supposed to be last in gamecycle
         dt = game_clock.tick(60) / 1000
 
 
